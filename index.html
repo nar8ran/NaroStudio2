@@ -54,8 +54,40 @@ button { font: inherit; }
 /* 中央のコンテンツ幅制御 */
 .page-inner {
   width: 100%;
-  max-width: 1200px;
+  max-width: none;
+  margin: 0;
+}
+
+/* Menu内の大きいプレビュー */
+.preview-box {
+  aspect-ratio: 16 / 9;
+  background: #111;
+  border-radius: 18px;
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
+  box-shadow: var(--shadow);
+}
+
+/* 説明文 */
+.feature-text {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  color: var(--text);
+  line-height: 1.85;
+  font-size: 14px;
+}
+
+/* 情報ボックス */
+.info-box {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  border-radius: 34px;
+  padding: 28px 28px 26px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(47,52,67,0.22);
 }
 
 .viewport {
@@ -88,12 +120,6 @@ button { font: inherit; }
     opacity 0.42s ease,
     transform 0.42s ease,
     visibility 0s linear 0s;
-}
-
-.page-inner {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
 @keyframes sidebar-rainbow-sweep {
