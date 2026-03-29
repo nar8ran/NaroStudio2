@@ -1,488 +1,1354 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>Naro studio</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Naro Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=M+PLUS+1p:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f8f8f8;
+  --text: #2f3443;
+  --muted: #6f7788;
+  --line: #dfe3ea;
+  --panel: rgba(255,255,255,0.82);
+  --panel-strong: #ffffff;
+  --side: rgba(245, 246, 248, 0.82);
+  --accent: #4FC3F7;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 14px 30px rgba(0, 0, 0, 0.10);
+  --card-a: linear-gradient(135deg, #9fe1ef 0%, #e8c8e9 100%);
+  --card-b: linear-gradient(135deg, #78e1b2 0%, #79c7f5 100%);
+  --card-c: linear-gradient(135deg, #f6b9ba 0%, #f0b06c 100%);
+  --card-d: linear-gradient(135deg, #8fd7e8 0%, #98f0d4 100%);
+}
 
-  <!-- Comfortaa & M PLUS 1p フォント追加 -->
-  <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=M+PLUS+1p&display=swap" rel="stylesheet">
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: 'M PLUS 1p', sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(159,225,239,0.16), transparent 26%),
+    radial-gradient(circle at top right, rgba(232,200,233,0.16), transparent 22%),
+    var(--bg);
+}
 
-  <style>
-    body {
-      font-family: 'M PLUS 1p', sans-serif;
-      background: #ffffff;
-      margin: 0;
-      padding: 40px 0 80px;
-      text-align: center;
-    }
-    h1 {
-      font-family: 'Comfortaa', cursive;
-    }
-    .caption {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #555;
-    }
-    hr {
-      border: none;
-      height: 3px;
-      width: 500px;
-      background: #88cc7a;
-      margin: 20px auto;
-    }
-    .tags {
-      margin-bottom: 10px;
-    }
-    .tag-btn {
-      display: inline-block;
-      padding: 8px 12px;
-      margin: 5px;
-      border: 1px solid #333;
-      border-radius: 4px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .genre-btn {
-      border-width: 2px;
-      font-weight: bold;
-    }
-    .tag-btn.active {
-      background: #333;
-      color: #fff;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(5, 150px);
-      gap: 15px;
-      justify-content: center;
-      margin: 20px auto;
-    }
-    .track {
-      background: #fff;
-      border: none;
-      border-radius: 8px;
-      width: 150px;
-      height: 150px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      position: relative;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      transition: box-shadow 0.3s ease;
-    }
-    .track:hover {
-      background: #eee;
-    }
-    .track.playing {
-      background: #ffffcc;
-    }
-    .playing-animation {
-      display: none;
-      position: absolute;
-      bottom: 8px;
-      right: 8px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #99ff99;
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 50%, 100% { opacity: 1; }
-      25%, 75% { opacity: 0; }
-    }
-    .duration {
-      display: block;
-      position: absolute;
-      bottom: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 12px;
-      color: #999;
-    }
-    audio { display: none; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
 
-    .link-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      position: fixed;
-      bottom: 60px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: auto; /* 中央寄せ修正 */
-    }
-    .link-buttons a {
-      display: inline-block;
-      padding: 8px 16px;
-      border-radius: 20px;
-      text-decoration: none;
-      font-weight: bold;
-      color: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    .link-buttons a.commission { background: #4FC3F7; }
-    .link-buttons a.commission:hover { background: #29B6F6; }
-    .link-buttons a.main-site { background: #ffb31a; }
-    .link-buttons a.main-site:hover { background: orange; }
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+}
 
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #88cc7a;
-      color: #fff;
-      padding: 10px 0;
-      font-size: 14px;
-    }
-  </style>
-  
+.main {
+  min-width: 0;
+  padding: 0;
+  position: relative;
+}
+
+.viewport {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(18px) scale(0.992);
+  transition:
+    opacity 0.42s ease,
+    transform 0.42s ease,
+    visibility 0s linear 0.42s;
+  overflow-y: auto;
+  padding: 34px 40px 38px;
+}
+
+.page.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 0.42s ease,
+    transform 0.42s ease,
+    visibility 0s linear 0s;
+}
+
+.page-inner {
+  width: min(1040px, 100%);
+  margin: 0 auto;
+}
+
+@keyframes sidebar-rainbow-sweep {
+  0% {
+    transform: translate(-135%, -135%) rotate(18deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.92;
+  }
+  58% {
+    opacity: 0.72;
+  }
+  100% {
+    transform: translate(135%, 135%) rotate(18deg);
+    opacity: 0;
+  }
+}
+
+.side {
+
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 40px 28px 40px;
+  background: rgba(245, 246, 248, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-left: 1px solid rgba(255,255,255,0.6);
+  box-shadow: inset 1px 0 0 rgba(255,255,255,0.5);
+  display: grid;
+  overflow: hidden;
+
+  grid-template-rows: auto 1fr auto;
+  align-items: stretch;
+  justify-items: center;
+}
+
+.side::before {
+  content: '';
+  position: absolute;
+  top: -28%;
+  left: -46%;
+  width: 78%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 120, 190, 0) 0%,
+    rgba(255, 120, 190, 0.12) 12%,
+    rgba(255, 214, 102, 0.26) 24%,
+    rgba(140, 220, 102, 0.26) 38%,
+    rgba(102, 217, 255, 0.28) 54%,
+    rgba(204, 153, 255, 0.24) 70%,
+    rgba(255,255,255,0.12) 82%,
+    rgba(255,255,255,0) 100%
+  );
+  filter: blur(18px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  animation: sidebar-rainbow-sweep 1.35s ease-out 0.35s 1 forwards;
+}
+
+.side > * {
+  position: relative;
+  z-index: 1;
+}
+
+.side-title {
+  margin: 18px 0 0;
+  font-family: 'Comfortaa', cursive;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  color: #222a3b;
+}
+
+.side-nav {
+  display: grid;
+  gap: 28px;
+  justify-items: center;
+  align-content: center;
+  min-height: 100%;
+}
+
+.nav-btn {
+  border: 0;
+  background: transparent;
+  color: #2d3342;
+  border-radius: 999px;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.22s ease, transform 0.22s ease, color 0.22s ease;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  background: rgba(255,255,255,0.62);
+  transform: translateY(-1px);
+}
+
+.side-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding-top: 48px;
+}
+
+.side-bottom strong {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(255,255,255,0.74);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.avatar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+}
+
+.mobile-topbar {
+  display: none;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  min-height: 60px;
+  padding: 10px 12px;
+  background: var(--side);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.52);
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.mobile-topbar .nav-btn {
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.hero-wrap {
+  min-height: calc(100vh - 68px);
+  display: grid;
+  place-items: center;
+}
+
+.hero-panel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 78vh;
+  border-radius: 38px;
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.58);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  display: grid;
+  place-items: center;
+}
+
+.hero-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(159,225,239,0.18), rgba(232,200,233,0.16));
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 24px;
+  width: min(760px, 100%);
+}
+
+.hero-copy .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.78);
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+h1, h2.section-title {
+  margin: 0;
+  font-family: 'M PLUS 1p', sans-serif;
+  color: #222a3b;
+}
+
+h1 {
+  font-size: clamp(52px, 7vw, 86px);
+  line-height: 1.02;
+  margin-bottom: 18px;
+}
+
+.hero-copy p {
+  margin: 0 auto;
+  width: min(620px, 100%);
+  color: #4f5668;
+  line-height: 1.95;
+  font-size: 15px;
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(0,0,0,0.12);
+}
+
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-secondary { background: #fff; color: var(--text); border-color: var(--line); }
+
+.split-heading {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  align-items: start;
+  gap: 24px;
+  margin-bottom: 34px;
+}
+
+.menu-heading {
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.section-title {
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1.06;
+  text-align: center;
+}
+
+.menu-heading .section-title {
+  justify-self: center;
+}
+
+.category-list {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  font-size: clamp(18px, 2vw, 22px);
+}
+
+.menu-heading .category-list {
+  justify-items: center;
+}
+
+.category-link {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.category-link:hover {
+  transform: translateX(4px);
+  opacity: 0.82;
+}
+
+.feature-section {
+  scroll-margin-top: 28px;
+}
+
+.content-block {
+  display: grid;
+  gap: 44px;
+}
+
+.feature-section {
+  display: grid;
+  gap: 18px;
+}
+
+.feature-title {
+  font-family: 'M PLUS 1p', sans-serif;
+  font-size: clamp(30px, 4vw, 54px);
+  text-align: center;
+}
+
+.preview-box {
+  aspect-ratio: 16 / 9;
+  background: #111;
+  border-radius: 18px;
+  width: min(100%, 760px);
+  margin: 0 auto;
+  box-shadow: var(--shadow);
+}
+
+.feature-text {
+  width: min(540px, 100%);
+  margin: 0 auto;
+  color: var(--text);
+  line-height: 1.85;
+  font-size: 14px;
+}
+
+.info-box {
+  width: min(560px, 100%);
+  margin: 0 auto;
+  border-radius: 34px;
+  padding: 28px 28px 26px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(47,52,67,0.22);
+}
+
+.info-box .mini-head {
+  text-align: center;
+  margin-bottom: 18px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px 20px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.info-grid strong {
+  font-weight: 500;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 28px 0 32px;
+}
+
+.filter-pill {
+  width: 138px;
+  height: 56px;
+  border: 0;
+  border-radius: 999px;
+  background: #111;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-pill:hover,
+.filter-pill.active {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.gallery-title {
+  text-align: center;
+  font-size: clamp(42px, 6vw, 72px);
+  margin-bottom: 6px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 26px;
+}
+
+.gallery-card {
+  cursor: pointer;
+  transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gallery-card:hover {
+  transform: translateY(-4px);
+}
+
+.gallery-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.gallery-card.hidden {
+  display: none;
+}
+
+.gallery-thumb {
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.gallery-thumb img,
+.gallery-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-label {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.contact-wrap {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 26px;
+  align-items: start;
+  margin-top: 34px;
+}
+
+.contact-card,
+.note-card {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.58);
+  border-radius: 30px;
+  padding: 28px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+}
+
+.contact-card h3,
+.note-card h3 {
+  margin: 0 0 14px;
+  font-size: 24px;
+}
+
+.contact-card p,
+.note-card p,
+.note-card li {
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 14px;
+}
+
+.contact-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.contact-item strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.contact-item span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.note-card ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.page-end-space { height: 24px; }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(34, 42, 59, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.28s ease, visibility 0s linear 0.28s;
+  z-index: 80;
+}
+
+.author-modal {
+  background: rgba(248,248,248,0.38);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.modal.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.28s ease, visibility 0s linear 0s;
+}
+
+.modal-panel {
+  width: min(980px, 100%);
+  max-height: min(88vh, 920px);
+  overflow: auto;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,255,255,0.68);
+  border-radius: 32px;
+  box-shadow: 0 22px 60px rgba(0,0,0,0.18);
+  transform: translateY(14px) scale(0.985);
+  transition: transform 0.28s ease;
+}
+
+.author-panel {
+  width: min(760px, 100%);
+  max-height: min(82vh, 760px);
+  background: rgba(255,255,255,0.52);
+  border: 1px solid rgba(255,255,255,0.64);
+  border-radius: 36px;
+  box-shadow: 0 22px 60px rgba(0,0,0,0.16);
+}
+
+.modal.open .modal-panel {
+  transform: translateY(0) scale(1);
+}
+
+.modal-inner {
+  padding: 24px;
+}
+
+.modal-close {
+  position: sticky;
+  top: 0;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.modal-media {
+  background: #111;
+  border-radius: 24px;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+}
+
+.modal-media img,
+.modal-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-copy {
+  background: rgba(255,255,255,0.82);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 22px;
+}
+
+.modal-copy h3 {
+  margin: 0 0 14px;
+  font-size: 26px;
+}
+
+.author-copy {
+  padding: 10px 8px 4px;
+  text-align: center;
+}
+
+.author-copy h3 {
+  margin: 0 0 14px;
+  font-family: 'M PLUS 1p', sans-serif;
+  font-size: clamp(30px, 4vw, 46px);
+  color: #222a3b;
+}
+
+.author-copy p {
+  margin: 0 auto 16px;
+  width: min(520px, 100%);
+  color: #4f5668;
+  line-height: 1.95;
+  font-size: 14px;
+}
+
+.author-meta {
+  width: min(560px, 100%);
+  margin: 24px auto 0;
+  display: grid;
+  gap: 12px;
+}
+
+.author-card {
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: 22px;
+  padding: 16px 18px;
+  text-align: left;
+}
+
+.author-card strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.author-card span {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.modal-copy p {
+  margin: 0 0 18px;
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: 14px;
+}
+
+.modal-meta {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.modal-meta div {
+  display: grid;
+  grid-template-columns: 86px 1fr;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.modal-meta strong {
+  color: var(--text);
+}
+
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.modal-tags span {
+  font-size: 11px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eef4fb;
+  color: #4e6480;
+}
+
+@media (max-width: 860px) {
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .modal {
+    padding: 12px;
+  }
+
+  .modal-inner {
+    padding: 16px;
+  }
+
+  .modal-copy {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 1040px) {
+  .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .split-heading,
+  .contact-wrap { grid-template-columns: 1fr; }
+  .category-list { justify-items: center; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side::before {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: 1fr; }
+  .side { display: none; }
+  .mobile-topbar { display: flex; }
+  .page { padding: 24px 16px 30px; }
+  .hero-panel { min-height: 72vh; border-radius: 26px; }
+}
+
+@media (max-width: 640px) {
+  .gallery-grid { grid-template-columns: 1fr; gap: 24px; }
+  .filters { gap: 10px; }
+  .filter-pill { width: 116px; height: 48px; }
+  .feature-text,
+  .info-box,
+  .preview-box { width: 100%; }
+  .contact-wrap { gap: 18px; }
+  .info-grid { grid-template-columns: 1fr; gap: 10px; }
+}
+</style>
 </head>
 <body>
-<h1>Naro studio</h1>
-<p class="caption">
-  なろが制作した楽曲を視聴できるサイトです。
-   <br>
-  タグ検索機能もございますので、ご依頼時の参考になれば幸いです。
-</p>
+<nav class="mobile-topbar">
+  <button class="nav-btn active" data-page-link="home">Home</button>
+  <button class="nav-btn" data-page-link="recommend">Recommend</button>
+  <button class="nav-btn" data-page-link="menu">Menu</button>
+  <button class="nav-btn" data-page-link="portfolio">Portfolio</button>
+  <button class="nav-btn" data-page-link="contact">Contact</button>
+</nav>
 
-  <hr style="border: none; height: 3px; width: 500px; background: #88cc7a; margin: 20px auto;">
+<div class="shell">
+  <main class="main">
+    <div class="viewport">
+      <section class="page active" id="home">
+        <div class="page-inner hero-wrap">
+          <div class="hero-panel">
+            <div class="hero-copy">
+              <div class="eyebrow">Creative Portfolio / Switching Page UI</div>
+              <h1>Naro Portfolio</h1>
+              <p>
+                右側や上部のボタンでページを切り替える、1ページ完結型のポートフォリオです。
+                切り替え時はふわっと自然に見えるよう、フェードと軽い移動を組み合わせています。
+              </p>
+              <div class="hero-actions">
+                <button class="btn btn-primary" data-page-link="portfolio">作品を見る</button>
+                <button class="btn btn-secondary" data-page-link="contact">連絡先を見る</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-<div class="tags">
-    <!-- 1段目: ジャンル -->
-    <div class="tag-btn genre-btn" onclick="toggleTag(this)">ジングル</div>
-    <div class="tag-btn genre-btn" onclick="toggleTag(this)">BGM</div>
-    <div class="tag-btn genre-btn" onclick="toggleTag(this)">楽曲</div>
+      <section class="page" id="recommend">
+  <div class="page-inner hero-wrap">
+    <div class="hero-panel" style="overflow:hidden;">
+      <div style="position:absolute; inset:0; background:url('https://placehold.co/1600x1000/f3e6d8/333?text=Your+Key+Visual') center/cover no-repeat;"></div>
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.35), transparent 55%);"></div>
+
+      <!-- コピー（上） -->
+      <div style="position:absolute; top:10%; left:50%; transform:translateX(-50%); text-align:center; color:#b86a3c; font-weight:700; font-size:clamp(20px,3vw,32px); line-height:1.5;">
+        オーダーメイドで<br>ここにしかないものを
+      </div>
+
+      <!-- メインコピー（下） -->
+      <div style="position:absolute; bottom:12%; left:50%; transform:translateX(-50%); text-align:center; color:#fff;">
+        <div style="font-size:clamp(18px,2vw,24px); font-weight:600; margin-bottom:10px;">Naro Studio Works</div>
+        <div style="font-size:13px; opacity:0.9;">音楽 / デザイン / 映像までトータルで制作</div>
+      </div>
+
+    </div>
   </div>
-    
-  <div class="tags">
-    <!-- 2段目: 音楽イメージ -->
-    <div class="tag-btn" onclick="toggleTag(this)">可愛い</div> 
-    <div class="tag-btn" onclick="toggleTag(this)">明るい</div>
-    <div class="tag-btn" onclick="toggleTag(this)">楽しい</div> 
-    <div class="tag-btn" onclick="toggleTag(this)">優しい</div> 
-    <div class="tag-btn" onclick="toggleTag(this)">切ない</div>
-    <div class="tag-btn" onclick="toggleTag(this)">カッコいい</div>
-    <div class="tag-btn" onclick="toggleTag(this)">ピアノ</div>
-    <div class="tag-btn" onclick="toggleTag(this)">ポップ</div>
-    <br>
-    <div class="tag-btn" onclick="toggleTag(this)">和風</div> 
-    <div class="tag-btn" onclick="toggleTag(this)">自然</div> 
-    <div class="tag-btn" onclick="toggleTag(this)">不穏</div> 
-    <div class="tag-btn" onclick="toggleTag(this)">幻想的</div>
-    <div class="tag-btn" onclick="toggleTag(this)">不思議</div>    
-    <div class="tag-btn" onclick="toggleTag(this)">アンニュイ</div> 
-    <div class="tag-btn" onclick="toggleTag(this)">リラックス</div> 
-    <div class="tag-btn" onclick="toggleTag(this)">物語調</div> 
-  </div>
+</section>
 
-  <div class="grid" id="trackGrid">
-    <!-- 曲1-20 -->
-    <!-- 各data-tagsを適切に変更してください -->
-<div class="grid" id="trackGrid">
-  <div class="track" data-tags="明るい 優しい 可愛い 自然 和風 幻想的 ジングル リラックス" onclick="playTrack('hamupi-')">潮に咲く
-     <span class="playing-animation"></span>
-    <span class="duration"></span>
-    <audio id="hamupi-" src="music/hamupi-.mp3"></audio>
-  </div>
+      <section class="page" id="menu">
+        <div class="page-inner">
+          <div class="split-heading menu-heading">
+            <h2 class="section-title">Menu</h2>
+            <div class="category-list">
+              <button class="category-link" data-menu-target="live2d-section">Live2D</button>
+              <button class="category-link" data-menu-target="illust-section">イラスト</button>
+              <button class="category-link" data-menu-target="design-section">デザイン</button>
+              <button class="category-link" data-menu-target="music-section">作曲</button>
+            </div>
+          </div>
 
-   <div class="track" data-tags="ジングル カッコいい 楽しい" onclick="playTrack('ddd')">ラジオマン
-     <span class="playing-animation"></span>
-     <span class="duration"></span>
-     <audio id="ddd" src="music/ddd.mp3"></audio>
-  </div>
+          <div class="content-block">
+            <section class="feature-section" id="live2d-section">
+              <h3 class="feature-title">Live2D</h3>
+              <div class="preview-box"></div>
+              <div class="feature-text">
+                <p>モデリングや表情差分、配信向けの自然な動きづけなどをまとめるセクションです。</p>
+                <p>ラフのイメージに合わせて、大きなプレビューと短い説明、その下に情報枠を置く構成にしています。</p>
+                <p>ここには制作範囲や担当工程、使用ソフトなどを入れられます。</p>
+              </div>
+              <div class="info-box">
+                <div class="mini-head">制作情報 / ダミー</div>
+                <div class="info-grid">
+                  <strong>担当範囲</strong><span>モデリング / 表情差分 / 物理演算</span>
+                  <strong>用途</strong><span>配信向け立ち絵 / 動画出演用モデル</span>
+                  <strong>補足</strong><span>可動域や見せたい印象に合わせて調整可能</span>
+                </div>
+              </div>
+            </section>
 
-  <div class="track" data-tags="明るい 楽しい 可愛い ポップ ジングル" onclick="playTrack('jikiru')">EVOLUTION！
- <span class="playing-animation"></span>   
-     <span class="duration"></span>
-    <audio id="jikiru" src="music/jikiru.mp3"></audio>
-  </div>  
-  
- <div class="track" data-tags="ジングル 明るい 可愛い ピアノ ポップ リラックス 優しい" onclick="playTrack('sunatumino')">つみあげサンド
-     <span class="playing-animation"></span>
- <span class="duration"></span>    
-    <audio id="sunatumino" src="music/sunatumino.mp3"></audio>
-  </div>  
-  
-  <div class="track" data-tags="優しい 切ない 自然 和風 ジングル ピアノ 物語調" onclick="playTrack('hirata')">邂逅
- <span class="playing-animation"></span>   
-     <span class="duration"></span>
-    <audio id="hirata" src="music/hirata.mp3"></audio>
-  </div>
-  
-  <div class="track" data-tags="幻想的 自然 優しい" onclick="playTrack('kirakira_snow')">オーロラ紀行
- <span class="playing-animation"></span>    
- <span class="duration"></span>    
-    <audio id="kirakira_snow" src="music/kirakira_snow.mp3"></audio>
-  </div>
+            <section class="feature-section" id="illust-section">
+              <h3 class="feature-title">イラスト</h3>
+              <div class="preview-box"></div>
+              <div class="feature-text">
+                <p>キャラクターイラスト、サムネイル、キービジュアルなどを見せるための枠です。</p>
+                <p>作品説明は長くしすぎず、用途と強みがひと目で分かる量に留めると見やすくなります。</p>
+                <p>必要ならこの先に作品一覧ページへの導線を入れても自然です。</p>
+              </div>
+              <div class="info-box">
+                <div class="mini-head">制作情報 / ダミー</div>
+                <div class="info-grid">
+                  <strong>担当範囲</strong><span>キャラクターイラスト / サムネイル / KV</span>
+                  <strong>用途</strong><span>配信用、告知用、動画用ビジュアル</span>
+                  <strong>補足</strong><span>やわらかい色味や世界観重視のビジュアル設計</span>
+                </div>
+              </div>
+            </section>
 
-  <div class="track" data-tags="ジングル 優しい ピアノ 幻想的  リラックス 不思議" onclick="playTrack('piano_flute')">モズとフルート
-     <span class="playing-animation"></span>
- <span class="duration"></span>    
-    <audio id="piano_flute" src="music/piano_flute.mp3"></audio>
-  </div>
+            <section class="feature-section" id="design-section">
+              <h3 class="feature-title">デザイン</h3>
+              <div class="preview-box"></div>
+              <div class="feature-text">
+                <p>ロゴ、配信画面、告知画像、サムネイルまわりなどのデザイン制作を紹介する枠です。</p>
+                <p>ビジュアルの方向性だけでなく、用途や見せたい印象を整理してデザインへ落とし込む流れも伝えられます。</p>
+                <p>作品単体だけでなく、シリーズものやセット制作の紹介にも向いています。</p>
+              </div>
+              <div class="info-box">
+                <div class="mini-head">制作情報 / ダミー</div>
+                <div class="info-grid">
+                  <strong>担当範囲</strong><span>ロゴ / 配信素材 / 告知画像 / サムネイル</span>
+                  <strong>用途</strong><span>活動ビジュアル整理、配信まわり、SNS展開</span>
+                  <strong>補足</strong><span>全体の世界観に合わせた統一感のある設計が可能</span>
+                </div>
+              </div>
+            </section>
 
-  <div class="track" data-tags="ジングル 明るい 楽しい カッコいい ポップ" onclick="playTrack('sakuya')">Howl Spice
- <span class="playing-animation"></span>
- <span class="duration"></span>    
-    <audio id="sakuya" src="music/sakuya.mp3"></audio>
-  </div>
+            <section class="feature-section" id="music-section">
+              <h3 class="feature-title">作曲</h3>
+              <div class="preview-box"></div>
+              <div class="feature-text">
+                <p>BGM、ジングル、楽曲など、音の制作をまとめるためのセクションです。</p>
+                <p>今の音楽ポートフォリオへの導線として使うこともでき、ここでは作曲カテゴリ全体の概要を見せる構成にしています。</p>
+                <p>活動に合った雰囲気づくりや、用途に合わせた音の提案ができることを短く伝えるのに向いています。</p>
+              </div>
+              <div class="info-box">
+                <div class="mini-head">制作情報 / ダミー</div>
+                <div class="info-grid">
+                  <strong>担当範囲</strong><span>BGM / ジングル / 楽曲制作</span>
+                  <strong>用途</strong><span>配信、動画、待機画面、紹介映像など</span>
+                  <strong>補足</strong><span>明るい・可愛い・やさしい方向を軸に、幻想的・物語調にも対応</span>
+                </div>
+              </div>
+            </section>
 
-  <div class="track" data-tags="ジングル 明るい 楽しい 可愛い ポップ" onclick="playTrack('juna')">サイバー×
-      <br>
-    キャンディ
- <span class="playing-animation"></span>  
- <span class="duration"></span>    
-    <audio id="juna" src="music/juna.mp3"></audio>
-  </div>  
-  
-  <div class="track" data-tags="ジングル 明るい 優しい 可愛い 和風 自然" onclick="playTrack('suiren')">水悠歌
- <span class="playing-animation"></span>    
- <span class="duration"></span>    
-    <audio id="suiren" src="music/suiren.mp3"></audio>
-  </div>
+            <section class="feature-section" style="gap: 24px;">
+              <div class="gallery-grid" style="gap: 10px;">
+                <article class="gallery-card" style="cursor: default;"><div class="gallery-thumb"></div></article>
+                <article class="gallery-card" style="cursor: default;"><div class="gallery-thumb"></div></article>
+                <article class="gallery-card" style="cursor: default;"><div class="gallery-thumb"></div></article>
+                <article class="gallery-card" style="cursor: default;"><div class="gallery-thumb"></div></article>
+                <article class="gallery-card" style="cursor: default;"><div class="gallery-thumb"></div></article>
+                <article class="gallery-card" style="cursor: default;"><div class="gallery-thumb"></div></article>
+              </div>
 
+              <div class="feature-text" style="width:min(760px, 100%); text-align:left;">
+                <p style="margin-bottom: 18px;"><strong>その他できること</strong></p>
+                <p>・映像制作（紹介映像 / ボカロMV / 歌ってみた など）<br>
+                ・サイト制作<br>
+                ・グラフィック関連の制作サポート</p>
+                <p>※撮影・3D制作は対応外です<br>
+                ※内容によってはお受けできない場合があります</p>
+                <p>「こんなことできる？」など、気軽にご相談ください◎</p>
+              </div>
+            </section>
+          </div>
+          <div class="page-end-space"></div>
+        </div>
+      </section>
 
-  <div class="track" data-tags="ジングル 切ない 優しい ピアノ 物語調" onclick="playTrack('taketa')">禁断の果実
- <span class="playing-animation"></span>    
-     <span class="duration"></span>
-    <audio id="taketa" src="music/taketa.mp3"></audio>
-  </div>
+      <section class="page" id="portfolio">
+        <div class="page-inner">
+          <h2 class="section-title gallery-title">Naro Portfolio</h2>
+          <p style="text-align:center; margin: 10px 0 0; color: var(--muted); font-size: 14px;">作品をダブルクリックすると、大きな画像または動画と解説を表示できます。</p>
+          <div class="filters">
+            <button class="filter-pill active" data-filter="all" aria-label="All"></button>
+            <button class="filter-pill" data-filter="live2d" aria-label="Live2D"></button>
+            <button class="filter-pill" data-filter="illust" aria-label="Illustration"></button>
+            <button class="filter-pill" data-filter="music" aria-label="Music"></button>
+          </div>
 
-  <div class="track" data-tags="ジングル 優しい 和風" onclick="playTrack('wafu_yuttari')">晴る風
- <span class="playing-animation"></span>    
- <span class="duration"></span>    
-    <audio id="wafu_yuttari" src="music/wafu_yuttari.mp3"></audio>
-  </div>
+          <div class="gallery-grid">
+            <article class="gallery-card" tabindex="0" data-category="live2d" data-type="image" data-src="https://placehold.co/1200x800/1f2433/ffffff?text=Live2D+01" data-title="Live2D Sample 01" data-description="配信向けモデルのサンプルです。自然な揺れ、顔まわりの追従、表情差分の見やすさを意識した構成です。" data-role="モデリング / 表情差分 / 物理演算" data-tool="Live2D Cubism" data-tags="Live2D,配信向け,モデリング">
+              <div class="gallery-thumb"></div><div class="gallery-label">Live2D Sample 01</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="illust" data-type="image" data-src="https://placehold.co/1200x800/5b6986/ffffff?text=Illustration+01" data-title="Illustration Sample 01" data-description="キャラクターイラストのサンプルです。配信サムネイルやキービジュアルに使いやすい構図を想定しています。" data-role="イラスト / サムネイル" data-tool="CLIP STUDIO PAINT" data-tags="イラスト,キャラクター,KV">
+              <div class="gallery-thumb"></div><div class="gallery-label">Illustration Sample 01</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="music" data-type="video" data-src="https://www.w3schools.com/html/mov_bbb.mp4" data-title="Music Sample 01" data-description="映像付きで見せたい音楽作品の例です。ダブルクリックで動画を大きく表示し、解説を添えられます。" data-role="作曲 / 編曲 / ミックス" data-tool="Studio One" data-tags="作曲,BGM,映像">
+              <div class="gallery-thumb"></div><div class="gallery-label">Music Sample 01</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="live2d" data-type="image" data-src="https://placehold.co/1200x800/2b3246/ffffff?text=Live2D+02" data-title="Live2D Sample 02" data-description="全身モデルや衣装差分を見せる想定のサンプルです。衣装パーツの揺れや可読性も確認できます。" data-role="Rigging / Fullbody" data-tool="Live2D Cubism" data-tags="Live2D,Fullbody,差分">
+              <div class="gallery-thumb"></div><div class="gallery-label">Live2D Sample 02</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="illust" data-type="image" data-src="https://placehold.co/1200x800/6f7d98/ffffff?text=Illustration+02" data-title="Illustration Sample 02" data-description="等身イラストや配信向け立ち絵を見せるためのダミーです。説明欄に用途や意図を載せられます。" data-role="立ち絵 / ビジュアル制作" data-tool="CLIP STUDIO PAINT" data-tags="イラスト,立ち絵,配信用">
+              <div class="gallery-thumb"></div><div class="gallery-label">Illustration Sample 02</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="music" data-type="image" data-src="https://placehold.co/1200x800/587c94/ffffff?text=Music+02" data-title="Music Sample 02" data-description="ジングルや短尺作品向けの表示例です。画像だけ拡大表示する使い方も可能です。" data-role="作曲 / ジングル制作" data-tool="Studio One" data-tags="作曲,ジングル,短尺">
+              <div class="gallery-thumb"></div><div class="gallery-label">Music Sample 02</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="live2d" data-type="image" data-src="https://placehold.co/1200x800/222838/ffffff?text=Live2D+03" data-title="Live2D Sample 03" data-description="顔まわり中心の動きや、細かな揺れの質感を確認できるサンプルです。" data-role="Face Rig / Physics" data-tool="Live2D Cubism" data-tags="Live2D,Face,Physics">
+              <div class="gallery-thumb"></div><div class="gallery-label">Live2D Sample 03</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="illust" data-type="image" data-src="https://placehold.co/1200x800/7186a6/ffffff?text=Illustration+03" data-title="Illustration Sample 03" data-description="やわらかい色味のビジュアルを想定したサンプルです。シリーズものにも使えます。" data-role="キャラクター / ビジュアル" data-tool="CLIP STUDIO PAINT" data-tags="イラスト,色味,世界観">
+              <div class="gallery-thumb"></div><div class="gallery-label">Illustration Sample 03</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="music" data-type="image" data-src="https://placehold.co/1200x800/7fc8df/ffffff?text=Music+03" data-title="Music Sample 03" data-description="インスト作品やボーカル曲のジャケット表示にも流用しやすい枠です。" data-role="作曲 / 編曲" data-tool="Studio One" data-tags="作曲,楽曲,インスト">
+              <div class="gallery-thumb"></div><div class="gallery-label">Music Sample 03</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="live2d" data-type="image" data-src="https://placehold.co/1200x800/2a3144/ffffff?text=Live2D+04" data-title="Live2D Sample 04" data-description="別衣装や別キャラクター用のモデリング例として使えるダミーです。" data-role="Modeling / Motion" data-tool="Live2D Cubism" data-tags="Live2D,衣装差分,Motion">
+              <div class="gallery-thumb"></div><div class="gallery-label">Live2D Sample 04</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="illust" data-type="image" data-src="https://placehold.co/1200x800/65748f/ffffff?text=Illustration+04" data-title="Illustration Sample 04" data-description="告知画像やSNS展開も想定したビジュアル例です。" data-role="グラフィック / イラスト" data-tool="Photoshop / CLIP STUDIO" data-tags="イラスト,告知,Graphic">
+              <div class="gallery-thumb"></div><div class="gallery-label">Illustration Sample 04</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="music" data-type="video" data-src="https://www.w3schools.com/html/movie.mp4" data-title="Music Sample 04" data-description="動画MVやループ動画付きの作品を見せる用途のサンプルです。" data-role="作曲 / 映像付き展示" data-tool="Studio One" data-tags="作曲,動画,MV">
+              <div class="gallery-thumb"></div><div class="gallery-label">Music Sample 04</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="live2d" data-type="image" data-src="https://placehold.co/1200x800/263042/ffffff?text=Live2D+05" data-title="Live2D Sample 05" data-description="一覧の最後に置く補助サンプルとして使えるダミーです。" data-role="Rigging / Support" data-tool="Live2D Cubism" data-tags="Live2D,補助,Sample">
+              <div class="gallery-thumb"></div><div class="gallery-label">Live2D Sample 05</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="illust" data-type="image" data-src="https://placehold.co/1200x800/8090af/ffffff?text=Illustration+05" data-title="Illustration Sample 05" data-description="シリーズ展示や差分紹介にも使いやすいビジュアル例です。" data-role="イラスト / 差分展示" data-tool="CLIP STUDIO PAINT" data-tags="イラスト,シリーズ,差分">
+              <div class="gallery-thumb"></div><div class="gallery-label">Illustration Sample 05</div>
+            </article>
+            <article class="gallery-card" tabindex="0" data-category="music" data-type="image" data-src="https://placehold.co/1200x800/6899b7/ffffff?text=Music+05" data-title="Music Sample 05" data-description="BGMやポートフォリオ用サムネイルの表示例です。" data-role="作曲 / BGM" data-tool="Studio One" data-tags="作曲,BGM,Sample">
+              <div class="gallery-thumb"></div><div class="gallery-label">Music Sample 05</div>
+            </article>
+          </div>
+        </div>
+      </section>
 
-    <div class="track" data-tags="ジングル 明るい 楽しい 可愛い ピアノ ポップ リラックス" onclick="playTrack('My Fleek Day')">My Fleek Day
-     <span class="playing-animation"></span>
- <span class="duration"></span>    
-    <audio id="My Fleek Day" src="music/My Fleek Day.mp3"></audio>
-  </div>
-  
- <div class="track" data-tags="楽しい カッコいい 明るい ジングル" onclick="playTrack('kaijo')">ブルーパンサー
- <span class="playing-animation"></span>
- <span class="duration"></span>    
-    <audio id="kaijo" src="music/kaijo.mp3"></audio>
-  </div>  
+      <section class="page" id="contact">
+        <div class="page-inner hero-wrap">
+          <div style="width:100%;">
+            <h2 class="section-title" style="margin-bottom: 26px;">Contact</h2>
+            <div class="contact-wrap">
+              <div class="contact-card">
+                <h3>ご連絡先</h3>
+                <p>ご相談やご依頼、ポートフォリオについてのご連絡先をまとめるセクションです。</p>
+                <div class="contact-list">
+                  <a class="contact-item" href="#">
+                    <div><strong>X / SNS</strong><span>更新情報・告知など</span></div>
+                    <span>@your_account</span>
+                  </a>
+                  <a class="contact-item" href="#">
+                    <div><strong>Mail</strong><span>お仕事のご相談窓口</span></div>
+                    <span>sample@example.com</span>
+                  </a>
+                  <a class="contact-item" href="#">
+                    <div><strong>Commission</strong><span>受付条件や料金案内</span></div>
+                    <span>Open</span>
+                  </a>
+                </div>
+              </div>
+              <div class="note-card">
+                <h3>メモ</h3>
+                <ul>
+                  <li>音楽カテゴリだけ既存の専用サイトへ飛ばす構成にもできます。</li>
+                  <li>作品クリックでモーダルを開く形にも拡張できます。</li>
+                  <li>このままHTML一枚でGitHub Pagesに載せられます。</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
 
-    <div class="track" data-tags="ジングル 明るい 優しい 可愛い ピアノ 和風" onclick="playTrack('yuiri')">ころりんキャッチ
-       <span class="playing-animation"></span>
- <span class="duration"></span>      
-      <audio id="yuiri" src="music/yuiri.mp3"></audio>
-  </div>
+    <div class="modal" id="workModal" aria-hidden="true">
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-inner">
+          <button class="modal-close" id="modalClose" aria-label="閉じる">✕</button>
+          <div class="modal-body">
+            <div class="modal-media" id="modalMedia"></div>
+            <div class="modal-copy">
+              <h3 id="modalTitle">作品タイトル</h3>
+              <div class="modal-meta">
+                <div><strong>カテゴリ</strong><span id="modalCategory">-</span></div>
+                <div><strong>担当</strong><span id="modalRole">-</span></div>
+                <div><strong>使用</strong><span id="modalTool">-</span></div>
+              </div>
+              <p id="modalDescription">作品の解説がここに入ります。</p>
+              <div class="modal-tags" id="modalTags"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <div class="track" data-tags="ジングル 明るい 優しい 可愛い ピアノ 楽しい" onclick="playTrack('nono')">Rizzy Me!
-       <span class="playing-animation"></span>
- <span class="duration"></span>      
-      <audio id="nono" src="music/nono.mp3"></audio>
-  </div>
+    <div class="modal author-modal" id="authorModal" aria-hidden="true">
+      <div class="modal-panel author-panel" role="dialog" aria-modal="true" aria-labelledby="authorTitle">
+        <div class="modal-inner">
+          <button class="modal-close" id="authorClose" aria-label="閉じる">✕</button>
+          <div class="author-copy">
+            <h3 id="authorTitle">About Naro</h3>
+            <p>
+              作曲、イラスト、デザイン、映像制作などを横断して活動するクリエイターとして、
+              やわらかい世界観と見せ方の設計を大切にしながら制作しています。
+            </p>
+            <p>
+              このポートフォリオでは、分野ごとの作品だけでなく、全体の雰囲気や対応できる制作範囲もまとめて見られる構成を意識しています。
+            </p>
+            <div class="author-meta">
+              <div class="author-card">
+                <strong>できること</strong>
+                <span>作曲 / BGM / ジングル / イラスト / デザイン / 映像制作 / サイト制作</span>
+              </div>
+              <div class="author-card">
+                <strong>得意な方向</strong>
+                <span>明るい・可愛い・やさしい・幻想的・物語調 など、雰囲気重視の世界観設計</span>
+              </div>
+              <div class="author-card">
+                <strong>ひとこと</strong>
+                <span>「こんなことできる？」という段階からでも、気軽に相談してもらえる制作を目指しています。</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-    <div class="track" data-tags="ジングル 不穏 優しい 切ない ピアノ アンニュイ 不思議" onclick="playTrack('meio')">皇の休日
-       <span class="playing-animation"></span>
- <span class="duration"></span>      
-      <audio id="meio" src="music/meio.mp3"></audio>
-  </div>
-  
-    <div class="track" data-tags="BGM 幻想的 可愛い 優しい 切ない リラックス" onclick="playTrack('ra-na1')">Aether
- <span class="playing-animation"></span>    
- <span class="duration"></span>    
-    <audio id="ra-na1" src="music/ra-na1.mp3"></audio>
-  </div>
-
-    <div class="track" data-tags="BGM 明るい 優しい 楽しい ピアノ ポップ 可愛い 自然" onclick="playTrack('ra-na2')">COTTONTAIL
-       <span class="playing-animation"></span>
- <span class="duration"></span>      
-      <audio id="ra-na2" src="music/ra-na2.mp3"></audio>
-  </div>  
-
-      <div class="track" data-tags="BGM 明るい 優しい 楽しい ピアノ ポップ 可愛い 自然" onclick="playTrack('memememe_1')">SETTING…
-       <span class="playing-animation"></span>
- <span class="duration"></span>      
-      <audio id="memememe_1" src="music/memememe_1.mp3"></audio>
-  </div>  
-
-    <div class="track" data-tags="BGM 明るい 優しい 楽しい ピアノ ポップ 可愛い 自然" onclick="playTrack('memememe_2')">BOOTING!!
-       <span class="playing-animation"></span>
- <span class="duration"></span>      
-      <audio id="memememe_2" src="music/memememe_2.mp3"></audio>
-  </div>  
-
-      <div class="track" data-tags="BGM 明るい 優しい 楽しい ピアノ ポップ 可愛い" onclick="playTrack('somari1')">ひだまり喫茶
-         <br>        
-        きゃんべる
-       <span class="playing-animation"></span>
- <span class="duration"></span>      
-      <audio id="somari1" src="music/somari1.mp3"></audio>
-  </div>  
-
-    <div class="track" data-tags="BGM 明るい 楽しい ピアノ ポップ 可愛い" onclick="playTrack('somari2')">今日も喫茶店は
-       <br>
-      大忙しなのだ！
-       <span class="playing-animation"></span>
- <span class="duration"></span>      
-      <audio id="somari2" src="music/somari2.mp3"></audio>
-  </div>  
-    
-  
-<div class="track" data-tags="BGM 切ない カッコいい ピアノ 不穏 幻想的 アンニュイ 物語調 自然" onclick="playTrack('arajiru')">再開と終焉
-   <span class="playing-animation"></span>
-   <span class="duration"></span>
-   <audio id="arajiru" src="music/arajiru.mp3"></audio>
+  <aside class="side">
+    <h2 class="side-title">Naro Studio</h2>
+    <nav class="side-nav">
+        <button class="nav-btn active" data-page-link="home">Home</button>
+        <button class="nav-btn" data-page-link="recommend">Recommend</button>
+        <button class="nav-btn" data-page-link="menu">Menu</button>
+        <button class="nav-btn" data-page-link="portfolio">Portfolio</button>
+        <button class="nav-btn" data-page-link="contact">Contact</button>
+      </nav>
+    <div class="side-bottom">
+      <strong>naro</strong>
+      <button class="avatar" id="authorTrigger" aria-label="作者紹介を開く"></button>
+    </div>
+  </aside>
 </div>
-
-<div class="track" data-tags="BGM  明るい 切ない カッコいい 不穏 楽しい アンニュイ 物語調" onclick="playTrack('arajiru_kaito')">Catch Me If You Dare
-   <span class="playing-animation"></span>
-   <span class="duration"></span>
-   <audio id="arajiru_kaito" src="music/arajiru_kaito.mp3"></audio>
-</div>
-
-  <div class="track" data-tags="BGM カッコいい 不穏 幻想的 不思議 アンニュイ 物語調 " onclick="playTrack('arajiru_huon')">骸
-   <span class="playing-animation"></span>
-   <span class="duration"></span>
-   <audio id="arajiru_huon" src="music/arajiru_huon.mp3"></audio>
-</div>
-
-  
-  <div class="track" data-tags="BGM 明るい 楽しい 可愛い ポップ" onclick="playTrack('27')">ポッピンラビッツ
-      <span class="duration"></span>
-      <span class="playing-animation"></span>
-      <audio id="27" src="music/27.mp3"></audio>
-  </div>
-
- <div class="track" data-tags="明るい 楽しい ポップ 和風 BGM リラックス" onclick="playTrack('miyabi')">なごみ
-    <br>
-    フューチャー
- <span class="playing-animation"></span>    
- <span class="duration"></span>    
-    <audio id="miyabi" src="music/miyabi.mp3"></audio>
-  </div>
-  
-  <div class="track" data-tags="BGM 楽しい ポップ 和風 不穏" onclick="playTrack('yoreisai')">和風ハロウィン
-     <br>
-    BGM
-     <span class="playing-animation"></span>
- <span class="duration"></span>    
-    <audio id="yoreisai" src="music/yoreisai.mp3"></audio>
-  </div>
-
-      <div class="track" data-tags="BGM 楽曲 可愛い 優しい 明るい 優しい 楽しい ピアノ ポップ リラックス" onclick="playTrack('osanpo')">おさんぽ日和
- <span class="playing-animation"></span>
- <span class="duration"></span>        
-    <audio id="osanpo" src="music/osanpo.mp3"></audio>
-  </div>
-  
-  <div class="track" data-tags="楽曲 明るい 優しい 楽しい 可愛い ピアノ ポップ 物語調 リラックス" onclick="playTrack('sister_off')">シスターエール（off）
-     <span class="playing-animation"></span>
- <span class="duration"></span>    
-    <audio id="sister_off" src="music/sister_off.mp3"></audio>
-  </div>
-  
-  <div class="track" data-tags="楽曲 明るい 楽しい 可愛い ポップ" onclick="playTrack('cheese2025')">cheese
-  
- <span class="playing-animation"></span>    
- <span class="duration"></span>    
-    <audio id="cheese2025" src="music/cheese2025.mp3"></audio>
-  </div>
-
-    <div class="track" data-tags="楽曲 明るい 優しい 楽しい ピアノ ポップ 可愛い" onclick="playTrack('kampana')">campana
-    
-       <span class="playing-animation"></span>
- <span class="duration"></span>      
-      <audio id="kampana" src="music/kampana.mp3"></audio>
-  </div>
-
-  
-<div class="link-buttons">
-  <a href="https://tsunagu.cloud/users/nar8ran" target="_blank" class="commission">コミッションはこちら</a>
-  <a href="https://lit.link/nar8ran" target="_blank" class="main-site">メインサイトはこちら</a>
-</div>
-
-  <footer>
-    © 2025 Naro studio. All rights reserved.
-  </footer>
 
 <script>
- const selectedTags = [];
-  let currentAudio = null;
-  let currentTrackDiv = null;
+  const pages = document.querySelectorAll('.page');
+  const navButtons = document.querySelectorAll('[data-page-link]');
+  const filterButtons = document.querySelectorAll('.filter-pill');
+  const menuLinks = document.querySelectorAll('[data-menu-target]');
+  const galleryCards = document.querySelectorAll('.gallery-card');
+  const modal = document.getElementById('workModal');
+  const modalClose = document.getElementById('modalClose');
+  const modalMedia = document.getElementById('modalMedia');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalCategory = document.getElementById('modalCategory');
+  const modalRole = document.getElementById('modalRole');
+  const modalTool = document.getElementById('modalTool');
+  const modalDescription = document.getElementById('modalDescription');
+  const modalTags = document.getElementById('modalTags');
+  const authorModal = document.getElementById('authorModal');
+  const authorClose = document.getElementById('authorClose');
+  const authorTrigger = document.getElementById('authorTrigger');
+  let currentPageId = 'home';
 
-  function playTrack(id) {
-    const audio = document.getElementById(id);
-    const trackDiv = audio.parentElement;
-    const anim = trackDiv.querySelector('.playing-animation');
-
-    if (currentAudio === audio) {
-      if (!audio.paused) {
-        audio.pause();
-        audio.currentTime = 0;
-        trackDiv.classList.remove('playing');
-        if (anim) anim.style.display = 'none';
-        currentAudio = null;
-        currentTrackDiv = null;
-      } else {
-        audio.play();
-        trackDiv.classList.add('playing');
-        if (anim) anim.style.display = 'inline-block';
-        currentAudio = audio;
-        currentTrackDiv = trackDiv;
-      }
-    } else {
-      if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-        if (currentTrackDiv) {
-          currentTrackDiv.classList.remove('playing');
-          const prevAnim = currentTrackDiv.querySelector('.playing-animation');
-          if (prevAnim) prevAnim.style.display = 'none';
-        }
-      }
-      audio.play();
-      trackDiv.classList.add('playing');
-      if (anim) anim.style.display = 'inline-block';
-      currentAudio = audio;
-      currentTrackDiv = trackDiv;
-    }
+  function setActiveNav(id) {
+    navButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.pageLink === id);
+    });
   }
 
-  function toggleTag(btn) {
-    const tag = btn.textContent;
-    if (btn.classList.contains('active')) {
-      btn.classList.remove('active');
-      const index = selectedTags.indexOf(tag);
-      if (index > -1) selectedTags.splice(index, 1);
-    } else {
-      btn.classList.add('active');
-      selectedTags.push(tag);
-    }
-    filterTracks();
+  function showPage(id) {
+    if (id === currentPageId) return;
+
+    const current = document.getElementById(currentPageId);
+    const next = document.getElementById(id);
+    if (!current || !next) return;
+
+    current.classList.remove('active');
+    next.classList.add('active');
+    next.scrollTop = 0;
+    currentPageId = id;
+    setActiveNav(id);
   }
 
-  function filterTracks() {
-    const tracks = document.getElementsByClassName('track');
-    for (let i = 0; i < tracks.length; i++) {
-      const tags = tracks[i].getAttribute('data-tags').split(' ');
-      const hasAll = selectedTags.every(t => tags.includes(t));
-      tracks[i].style.display = hasAll || selectedTags.length === 0 ? '' : 'none';
+  function buildModalMedia(type, src, title) {
+    modalMedia.innerHTML = '';
+    if (type === 'video') {
+      const video = document.createElement('video');
+      video.src = src;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.setAttribute('aria-label', title);
+      modalMedia.appendChild(video);
+      return;
     }
+
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = title;
+    modalMedia.appendChild(img);
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const tracks = document.querySelectorAll('.track');
-    tracks.forEach(track => {
-      const audio = track.querySelector('audio');
-      const durationSpan = track.querySelector('.duration');
+  function openModal(card) {
+    const category = card.dataset.category || '-';
+    const type = card.dataset.type || 'image';
+    const src = card.dataset.src || '';
+    const title = card.dataset.title || '作品タイトル';
+    const description = card.dataset.description || '';
+    const role = card.dataset.role || '-';
+    const tool = card.dataset.tool || '-';
+    const tags = (card.dataset.tags || '').split(',').map(tag => tag.trim()).filter(Boolean);
 
-      audio.addEventListener('loadedmetadata', () => {
-        const duration = audio.duration;
-        const minutes = Math.floor(duration / 60);
-        const seconds = Math.floor(duration % 60).toString().padStart(2, '0');
-        durationSpan.textContent = `${minutes}:${seconds}`;
+    modalTitle.textContent = title;
+    modalCategory.textContent = category;
+    modalRole.textContent = role;
+    modalTool.textContent = tool;
+    modalDescription.textContent = description;
+    modalTags.innerHTML = '';
+    tags.forEach(tag => {
+      const span = document.createElement('span');
+      span.textContent = tag;
+      modalTags.appendChild(span);
+    });
+    buildModalMedia(type, src, title);
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    modalMedia.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  function openAuthorModal() {
+    authorModal.classList.add('open');
+    authorModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAuthorModal() {
+    authorModal.classList.remove('open');
+    authorModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => showPage(btn.dataset.pageLink));
+  });
+
+  menuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const target = document.getElementById(link.dataset.menuTarget);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      const filter = button.dataset.filter;
+      galleryCards.forEach(card => {
+        const matched = filter === 'all' || card.dataset.category === filter;
+        card.classList.toggle('hidden', !matched);
       });
     });
+  });
+
+  galleryCards.forEach(card => {
+    const thumb = card.querySelector('.gallery-thumb');
+    const type = card.dataset.type;
+    const src = card.dataset.src;
+    const title = card.dataset.title || '';
+
+    if (thumb && src) {
+      if (type === 'video') {
+        const video = document.createElement('video');
+        video.src = src;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.autoplay = true;
+        thumb.appendChild(video);
+      } else {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = title;
+        thumb.appendChild(img);
+      }
+    }
+
+    card.addEventListener('dblclick', () => openModal(card));
+    card.addEventListener('keydown', event => {
+      if (event.key === 'Enter') {
+        openModal(card);
+      }
+    });
+  });
+
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', event => {
+    if (event.target === modal) closeModal();
+  });
+
+  authorTrigger.addEventListener('click', openAuthorModal);
+  authorClose.addEventListener('click', closeAuthorModal);
+  authorModal.addEventListener('click', event => {
+    if (event.target === authorModal) closeAuthorModal();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      if (modal.classList.contains('open')) closeModal();
+      if (authorModal.classList.contains('open')) closeAuthorModal();
+    }
   });
 </script>
 </body>
